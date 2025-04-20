@@ -1,3 +1,5 @@
+// src/__tests__/mocks/data.js
+
 export const data = [
   {
     id: 1,
