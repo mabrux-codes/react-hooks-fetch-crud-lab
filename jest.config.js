@@ -6,7 +6,8 @@ module.exports = {
   setupFilesAfterEnv: ["<rootDir>/src/__tests__/setupTests.js"],
 
   transformIgnorePatterns: [
-    "/node_modules/(?!(\\@adobe/css-tools)/)" // allow this module to be transformed
+    "/node_modules/(?!(@adobe/css-tools)/)" // ✅ no need to escape @
   ],
+
   moduleFileExtensions: ["js", "jsx"],
 };
