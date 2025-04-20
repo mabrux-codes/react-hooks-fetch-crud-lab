@@ -1,13 +1,32 @@
 import React from "react";
 
-function QuestionItem({ question }) {
-  const { id, prompt, answers, correctIndex } = question;
+function QuestionItem({ question, onDelete }) {// destructuring question and onDelete props
+  // destructuring question prop
+  if (!question || !Array.isArray(question.answers)) {// check if question is null or undefined
+    return null; // end program
+  }
 
-  const options = answers.map((answer, index) => (
+  const { id, prompt, answers, correctIndex } = question;// destructuring question prop
+ 
+  const options = answers.map((answer, index) => (// mapping through answers array
     <option key={index} value={index}>
       {answer}
     </option>
   ));
+  function handleDelete() {
+    fetch(`http://localhost:4000/questions/${id}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error("Failed to delete question");
+        return response.json();
+      })
+      .then(() => {
+        console.log("Deleted!");
+        if (onDelete) onDelete(id); // notify parent
+      })
+      .catch((error) => console.error("Delete error:", error));
+  }
 
   return (
     <li>
@@ -17,7 +36,7 @@ function QuestionItem({ question }) {
         Correct Answer:
         <select defaultValue={correctIndex}>{options}</select>
       </label>
-      <button>Delete Question</button>
+      <button onClick={handleDelete}>Delete Question</button>
     </li>
   );
 }
